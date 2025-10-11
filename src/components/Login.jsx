@@ -8,6 +8,7 @@ import { BASE_URL } from "../utils/constants";
 const Login = () => {
   const [emailId, setEmailId] = useState("shobhit@jain.com");
   const [password, setPassword] = useState("Shobhit@_123");
+  const [error, setError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -16,7 +17,7 @@ const Login = () => {
       const res = await axios.post(
         BASE_URL + "/login",
         {
-          email: emailId, 
+          email : emailId,
           password,
         },
         { withCredentials: true }
@@ -24,7 +25,7 @@ const Login = () => {
       dispatch(addUser(res.data));
       return navigate("/");
     } catch (err) {
-      console.error(err);
+      setError(err?.response?.data || "Something went wrong");
     }
   };
 
@@ -39,7 +40,7 @@ const Login = () => {
                 <span className="label-text">Email ID:</span>
               </div>
               <input
-                type="email"
+                type="text"
                 value={emailId}
                 className="input input-bordered w-full max-w-xs"
                 onChange={(e) => setEmailId(e.target.value)}
@@ -50,13 +51,14 @@ const Login = () => {
                 <span className="label-text">Password</span>
               </div>
               <input
-                type="password"
+                type="text"
                 value={password}
                 className="input input-bordered w-full max-w-xs"
                 onChange={(e) => setPassword(e.target.value)}
               />
             </label>
           </div>
+          <p className="text-red-500">{error}</p>
           <div className="card-actions justify-center m-2">
             <button className="btn btn-primary" onClick={handleLogin}>
               Login
@@ -67,5 +69,4 @@ const Login = () => {
     </div>
   );
 };
-
 export default Login;
