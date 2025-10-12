@@ -15,7 +15,7 @@ const NavBar = () => {
       dispatch(removeUser());
       return navigate("/login");
     } catch (err) {
-      console.error(err);
+      // Error logic maybe redirect to error page
     }
   };
 
@@ -27,7 +27,7 @@ const NavBar = () => {
         </Link>
       </div>
       {user && (
-        <div className="flex items-center gap-2">
+        <div className="flex-none gap-2">
           <div className="form-control">Welcome, {user.firstName}</div>
           <div className="dropdown dropdown-end mx-5 flex">
             <div
@@ -50,7 +50,10 @@ const NavBar = () => {
                 </Link>
               </li>
               <li>
-                <a>Settings</a>
+                <Link to="/connections">Connections</Link>
+              </li>
+              <li>
+                <Link to="/requests">Requests</Link>
               </li>
               <li>
                 <a onClick={handleLogout}>Logout</a>
