@@ -24,12 +24,14 @@ const Feed = () => {
         getFeed();
     }, [dispatch]);
 
+    if (!feed) return;
+
     return (
         <div className="flex justify-center my-10">
             {feed && feed.length > 0 ? (
                 <UserCard user={feed[0]} />
             ) : (
-                <div>Loading...</div>
+                <div>No user Found...</div>
             )}
         </div>
     )
