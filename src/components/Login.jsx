@@ -6,11 +6,11 @@ import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils/constants";
 
 const Login = () => {
-  const [isLoginForm, setIsLoginForm] = useState(true);
   const [emailId, setEmailId] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [isLoginForm, setIsLoginForm] = useState(true);
   const [error, setError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const Login = () => {
       const res = await axios.post(
         BASE_URL + "/login",
         {
-          email: emailId,
+          emailId,
           password,
         },
         { withCredentials: true }
@@ -36,7 +36,7 @@ const Login = () => {
     try {
       const res = await axios.post(
         BASE_URL + "/signup",
-        { firstName, lastName, email: emailId, password },
+        { firstName, lastName, emailId, password },
         { withCredentials: true }
       );
       dispatch(addUser(res.data.data));

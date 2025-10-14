@@ -23,11 +23,11 @@ const NavBar = () => {
     <div className="navbar bg-base-300">
       <div className="flex-1">
         <Link to="/" className="btn btn-ghost text-xl">
-          👩‍💻 DevTinder
+          AlgoMates ⭐️
         </Link>
       </div>
       {user && (
-        <div className="flex items-center gap-2">
+        <div className="flex-none gap-2">
           <div className="form-control">Welcome, {user.firstName}</div>
           <div className="dropdown dropdown-end mx-5 flex">
             <div
@@ -52,6 +52,7 @@ const NavBar = () => {
               <li>
                 <Link to="/connections">Connections</Link>
               </li>
+
               <li>
                 <Link to="/requests">Requests</Link>
               </li>

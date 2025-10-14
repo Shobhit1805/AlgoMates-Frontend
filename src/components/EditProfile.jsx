@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import UserCard from "./UserCard";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
@@ -9,14 +10,16 @@ const EditProfile = ({ user }) => {
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setLastName] = useState(user.lastName);
   const [photoUrl, setPhotoUrl] = useState(user.photoUrl);
-  const [age, setAge] = useState(user.age);
-  const [gender, setGender] = useState(user.gender);
-  const [about, setAbout] = useState(user.about);
+  const [age, setAge] = useState(user.age || "");
+  const [gender, setGender] = useState(user.gender || "");
+  const [about, setAbout] = useState(user.about || "");
   const [error, setError] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [showToast, setShowToast] = useState(false);
 
   const saveProfile = async () => {
+    setError("");
     try {
       const res = await axios.patch(
         BASE_URL + "/profile/edit",
@@ -34,7 +37,8 @@ const EditProfile = ({ user }) => {
       setShowToast(true);
       setTimeout(() => {
         setShowToast(false);
-      }, 3000);
+        navigate("/");
+      }, 1000);
     } catch (err) {
       setError(err.response.data);
     }
@@ -131,7 +135,7 @@ const EditProfile = ({ user }) => {
       {showToast && (
         <div className="toast toast-top toast-center">
           <div className="alert alert-success">
-            <span>Profile saved successfully.</span>
+            <span>Profile updated ✅</span>
           </div>
         </div>
       )}
