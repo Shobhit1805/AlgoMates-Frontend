@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 
 const Premium = () => {
   const [isUserPremium, setIsUserPremium] = useState(false);
-  useEffect(() => {
+
+  useEffect(() => { // on component load
     verifyPremiumUser();
   }, []);
 
@@ -45,7 +46,7 @@ const Premium = () => {
       theme: {
         color: "#a44a67ff",
       },
-      handler: verifyPremiumUser,
+      handler: verifyPremiumUser, // function to handle after payment success
     };
 
     const rzp = new window.Razorpay(options);
@@ -54,7 +55,7 @@ const Premium = () => {
 
   /// main return
   return isUserPremium ? (
-    "You're are already a premium user"
+    "You're are already a premium user" // show some premium content
   ) : (
     <div className="m-10">
       <div className="flex w-full">
