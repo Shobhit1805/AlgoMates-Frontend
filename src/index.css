@@ -2,9 +2,14 @@
 
 @import "tailwindcss";
 @plugin "daisyui" {
-  themes: forest --default, light, cupcake;
+  themes: retro --default, light, cupcake;
 }
 
 body {
   font-family: "Montserrat", sans-serif;
+}
+
+:root {
+  --rounded-btn: 1.5rem;
+  --rounded-box: 1.5rem;
 }
