@@ -1,13 +1,16 @@
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
-import { useEffect } from "react";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { addConnections } from "../utils/connectionSlice";
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom";
+import UserCard from "./UserCard";
 
 const Connections = () => {
   const connections = useSelector((store) => store.connections);
   const dispatch = useDispatch();
+  const [selectedUser, setSelectedUser] = useState(null);
+
   const fetchConnections = async () => {
     try {
       const res = await axios.get(BASE_URL + "/user/connections", {
@@ -15,7 +18,7 @@ const Connections = () => {
       });
       dispatch(addConnections(res.data.data));
     } catch (err) {
-        console.log(err)
+      console.log(err);
     }
   };
 
@@ -23,44 +26,110 @@ const Connections = () => {
     fetchConnections();
   }, []);
 
-  if (!connections) return;
+  if (!connections) return null;
 
-  if (connections.length === 0) return <h1 className="flex justify-center"> No Connections Found</h1>;
+  // ================= EMPTY STATE =================
+  if (connections.length === 0) {
+    return (
+      <div className="min-h-[60vh] flex flex-col items-center justify-center text-center">
+        <h2 className="text-2xl font-bold mb-2">No Connections Yet</h2>
+        <p className="opacity-70">
+          Start connecting with developers to see them here.
+        </p>
+      </div>
+    );
+  }
 
   return (
-    <div className="text-center my-10">
-      <h1 className="text-bold text-white text-3xl">Connections</h1>
+    <>
+      <div className="max-w-6xl mx-auto px-4 py-10">
+        <h1 className="text-3xl font-bold text-center mb-8">
+          Your Connections
+        </h1>
 
-      {connections.map((connection) => {
-        const { _id, firstName, lastName, photoUrl, age, gender, about } =
-          connection;
+        {/* GRID */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 place-items-center">
+          {connections.map((connection) => {
+            const { _id, firstName, lastName, photoUrl, age, gender, about } =
+              connection;
 
-        return (
-          <div
-            key={_id}
-            className=" flex m-4 p-4 rounded-lg bg-base-300 w-1/2 mx-auto"
-          >
-            <div>
-              <img
-                alt="photo"
-                className="w-20 h-20 rounded-full object-cover"
-                src={photoUrl}
-              />
-            </div>
-            <div className="text-left mx-4 ">
-              <h2 className="font-bold text-xl">
-                {firstName + " " + lastName}
-              </h2>
-              {age && gender && <p>{age + ", " + gender}</p>}
-              <p>{about}</p>
-            </div>
-            <Link to={"/chat/" + _id}>
-              <button className="btn btn-primary">Chat</button>
-            </Link>
+            return (
+              <div
+                key={ _id }
+                className="
+                  w-full max-w-sm
+                  bg-gradient-to-b from-white via-base-100 to-base-200/60
+                  ring-1 ring-base-300/60
+                  rounded-2xl
+                  p-5
+                  shadow-lg
+                  hover:shadow-xl
+                  hover:-translate-y-1
+                  transition-all duration-300
+                  flex flex-col items-center text-center
+                "
+              >
+                {/* AVATAR */}
+                <img
+                  src={photoUrl}
+                  alt="profile"
+                  className="w-20 h-20 rounded-full object-cover ring-2 ring-base-300 mb-3"
+                />
+
+                {/* INFO */}
+                <h2 className="text-xl font-bold">
+                  {firstName} {lastName}
+                </h2>
+
+                {age && gender && (
+                  <p className="text-sm opacity-70">
+                    {age} • {gender}
+                  </p>
+                )}
+
+                <p className="mt-2 text-sm opacity-80 italic line-clamp-2">
+                  {about || "No bio provided"}
+                </p>
+
+                {/* ACTIONS */}
+                <div className="mt-4 flex flex-col gap-2 w-full">
+                  <button
+                    onClick={() => setSelectedUser(connection)}
+                    className="btn btn-outline rounded-full"
+                  >
+                    View Profile
+                  </button>
+
+                  <Link to={`/chat/${_id}`}>
+                    <button className="btn btn-primary w-full rounded-full">
+                      Chat
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/*PROFILE PREVIEW*/}
+      {selectedUser && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+          <div className="relative">
+            <UserCard user={selectedUser} />
+
+            {/* CLOSE */}
+            <button
+              onClick={() => setSelectedUser(null)}
+              className="absolute -top-4 -right-4 btn btn-circle btn-sm"
+            >
+              ✕
+            </button>
           </div>
-        );
-      })}
-    </div>
+        </div>
+      )}
+    </>
   );
 };
+
 export default Connections;

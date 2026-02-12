@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils/constants";
+import { Eye, EyeOff } from "lucide-react";
 
 const Login = () => {
   const [emailId, setEmailId] = useState("");
@@ -12,6 +13,8 @@ const Login = () => {
   const [lastName, setLastName] = useState("");
   const [isLoginForm, setIsLoginForm] = useState(true);
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -19,14 +22,11 @@ const Login = () => {
     try {
       const res = await axios.post(
         BASE_URL + "/login",
-        {
-          emailId,
-          password,
-        },
-        { withCredentials: true }
+        { emailId, password },
+        { withCredentials: true },
       );
       dispatch(addUser(res.data));
-      return navigate("/");
+      navigate("/");
     } catch (err) {
       setError(err?.response?.data || "Something went wrong");
     }
@@ -37,93 +37,111 @@ const Login = () => {
       const res = await axios.post(
         BASE_URL + "/signup",
         { firstName, lastName, emailId, password },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       dispatch(addUser(res.data.data));
-      return navigate("/profile");
+      navigate("/profile");
     } catch (err) {
       setError(err?.response?.data || "Something went wrong");
     }
   };
 
   return (
-    <div className="flex justify-center my-10">
-      <div className="card bg-base-300 w-96 shadow-xl">
-        <div className="card-body">
-          <h2 className="card-title justify-center">
-            {isLoginForm ? "Login" : "Sign Up"}
-          </h2>
-          <div>
-            {!isLoginForm && (
-              <>
-                <label className="form-control w-full max-w-xs my-2">
-                  <div className="label">
-                    <span className="label-text">First Name</span>
-                  </div>
+    <div className="min-h-[calc(100vh-64px)] flex items-center justify-center px-4 bg-base-200">
+      <div className="w-full max-w-md">
+        <div className="card bg-base-100 shadow-xl rounded-2xl">
+          <div className="card-body px-6 py-8 sm:px-8">
+            {/* Title */}
+            <h2 className="text-2xl font-bold text-center mb-1">
+              {isLoginForm ? "Login" : "Sign Up"}
+            </h2>
+            <p className="text-sm opacity-70 text-center mb-6">
+              {isLoginForm
+                ? "Welcome back to Algomates"
+                : "Create your Algomates account"}
+            </p>
+
+            {/* Form */}
+            <div className="space-y-4">
+              {!isLoginForm && (
+                <div className="flex flex-col sm:flex-row gap-3">
                   <input
                     type="text"
                     value={firstName}
-                    className="input input-bordered w-full max-w-xs"
+                    placeholder="First Name"
+                    className="input input-bordered w-full"
                     onChange={(e) => setFirstName(e.target.value)}
                   />
-                </label>
-                <label className="form-control w-full max-w-xs my-2">
-                  <div className="label">
-                    <span className="label-text">Last Name</span>
-                  </div>
                   <input
                     type="text"
                     value={lastName}
-                    className="input input-bordered w-full max-w-xs"
+                    placeholder="Last Name"
+                    className="input input-bordered w-full"
                     onChange={(e) => setLastName(e.target.value)}
                   />
-                </label>
-              </>
-            )}
-            <label className="form-control w-full max-w-xs my-2">
-              <div className="label">
-                <span className="label-text">Email ID:</span>
-              </div>
+                </div>
+              )}
+
               <input
-                type="text"
+                type="email"
                 value={emailId}
-                className="input input-bordered w-full max-w-xs"
+                placeholder="Email ID"
+                className="input input-bordered w-full"
                 onChange={(e) => setEmailId(e.target.value)}
               />
-            </label>
-            <label className="form-control w-full max-w-xs my-2">
-              <div className="label">
-                <span className="label-text">Password</span>
+
+              {/* Password with Eye Toggle */}
+              {/* Password with Eye Toggle (FIXED) */}
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  placeholder="Password"
+                  className="input input-bordered w-full pr-10"
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute inset-y-0 right-3 flex items-center
+               z-10 opacity-60 hover:opacity-100 transition"
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
               </div>
-              <input
-                type="password"
-                value={password}
-                className="input input-bordered w-full max-w-xs"
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </label>
-          </div>
-          <p className="text-red-500">{error}</p>
-          <div className="card-actions justify-center m-2">
+            </div>
+
+            {/* Error */}
+            {error && (
+              <p className="text-red-500 text-sm mt-3 text-center">{error}</p>
+            )}
+
+            {/* Button */}
             <button
-              className="btn btn-primary"
+              className="btn btn-primary w-full mt-6"
               onClick={isLoginForm ? handleLogin : handleSignUp}
             >
               {isLoginForm ? "Login" : "Sign Up"}
             </button>
-          </div>
 
-          <p
-            className="m-auto cursor-pointer py-2"
-            onClick={() => setIsLoginForm((value) => !value)}
-          >
-            {isLoginForm
-              ? "New User? Signup Here"
-              : "Existing User? Login Here"}
-          </p>
+            {/* Switch */}
+            <p
+              className="text-center text-sm mt-5 cursor-pointer opacity-80 hover:opacity-100 transition"
+              onClick={() => {
+                setError("");
+                setIsLoginForm((prev) => !prev);
+              }}
+            >
+              {isLoginForm
+                ? "New user? Sign up here"
+                : "Already have an account? Login"}
+            </p>
+          </div>
         </div>
       </div>
     </div>
   );
 };
+
 export default Login;

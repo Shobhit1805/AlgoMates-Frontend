@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Changa+One:ital@0;1&family=Gravitas+One&display=swap');
 
 @import "tailwindcss";
 @plugin "daisyui" {
@@ -13,3 +14,12 @@ body {
   --rounded-btn: 1.5rem;
   --rounded-box: 1.5rem;
 }
+
+.font-algomates-alt {
+  font-family: 'Gravitas One', cursive;
+}
+
+.font-algomates {
+  font-family: 'Changa One', cursive;
+}
+

@@ -26,7 +26,7 @@ const NavBar = () => {
       <div className="flex-1">
         <Link
           to="/"
-          className="text-xl md:text-2xl font-bold tracking-wide hover:opacity-80 transition"
+          className="font-algomates text-xl md:text-3xl font-bold tracking-wide hover:opacity-90 transition"
         >
           AlgoMates ⭐
         </Link>
