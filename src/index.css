@@ -3,7 +3,8 @@
 
 @import "tailwindcss";
 @plugin "daisyui" {
-  themes: retro --default, light, cupcake;
+  /* themes: sunset --default, light, cupcake; */
+   themes: retro --default, dark, valentine;
 }
 
 body {
@@ -23,3 +24,11 @@ body {
   font-family: 'Changa One', cursive;
 }
 
+/* @keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 8s linear infinite;
+} */
