@@ -23,20 +23,22 @@ const NavBar = () => {
 
   return (
     <div className="navbar bg-base-100 px-7 py-3 shadow-sm sticky top-0 z-50">
-      
-      {/* Logo */}
-      <div className="flex-1">
+      {/* Logo + Tagline */}
+      <div className="flex-1 flex flex-col leading-tight">
         <Link
           to="/"
           className="font-algomates text-xl md:text-3xl font-bold tracking-wide hover:opacity-90 transition"
         >
           AlgoMates ⭐
         </Link>
+
+        <span className="font-tagline text-sm md:text-base opacity-70 italic">
+          Linking the Nodes
+        </span>
       </div>
 
-      {/* 🔥 RIGHT SIDE CONTAINER (ALWAYS VISIBLE) */}
+      {/* RIGHT SIDE CONTAINER (ALWAYS VISIBLE) */}
       <div className="flex items-center gap-6">
-
         {/* ✅ THEME SWITCHER (ALWAYS VISIBLE) */}
         <ThemeSwitcher />
 
@@ -82,9 +84,7 @@ const NavBar = () => {
                     <img src={user.photoUrl} alt="profile" />
                   </div>
                 </div>
-                <span className="text-sm font-medium">
-                  {user.firstName}
-                </span>
+                <span className="text-sm font-medium">{user.firstName}</span>
               </Link>
 
               <button
@@ -141,7 +141,6 @@ const NavBar = () => {
             </div>
           </>
         )}
-
       </div>
     </div>
   );

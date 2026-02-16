@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Changa+One:ital@0;1&family=Gravitas+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital@1&family=Great+Vibes&display=swap');
+
 
 @import "tailwindcss";
 @plugin "daisyui" {
@@ -32,3 +34,8 @@ body {
 .animate-spin-slow {
   animation: spin-slow 8s linear infinite;
 } */
+ 
+.font-tagline {
+  font-family: 'Great Vibes', cursive;
+}
+
